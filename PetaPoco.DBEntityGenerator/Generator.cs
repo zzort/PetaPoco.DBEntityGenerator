@@ -6,8 +6,9 @@
     using System.Collections.Generic;
     using System.Data.Common;
     using System.Linq;
+    using System.Text;
     using System.Text.RegularExpressions;
-
+    
     public class Generator
     {
         private IOutput _outer;
@@ -27,6 +28,10 @@
             WriteLine("//     Connection String: `{0}`", Helpers.zap_password(cmd.ConnectionString));
             WriteLine("//     Provider:               `{0}`", cmd.ProviderName);
             WriteLine("");
+
+#if NET6_0_OR_GREATER
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+#endif
 
             var context = new GenerateContext
             {
