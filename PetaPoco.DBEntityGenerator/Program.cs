@@ -42,6 +42,12 @@
                 }
 
                 generateCommand = JsonConvert.DeserializeObject<GenerateCommand>(configFileContent);
+                
+                // Allow the connection string from the command line to override the one in the config file.
+                if (!string.IsNullOrWhiteSpace(opts.ConnectionString))
+                {
+                    generateCommand.ConnectionString = opts.ConnectionString;
+                }
             }
             else
             {
@@ -59,6 +65,7 @@
 
             if (string.Equals("file", opts.Output, StringComparison.InvariantCultureIgnoreCase))
             {
+                Console.WriteLine($"Writing to file '{opts.OutputFile}'");
                 output = new FileOutput(opts.OutputFile);
             }
             else
