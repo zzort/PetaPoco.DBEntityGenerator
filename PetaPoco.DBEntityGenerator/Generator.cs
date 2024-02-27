@@ -29,7 +29,7 @@
             WriteLine("//     Provider:               `{0}`", cmd.ProviderName);
             WriteLine("");
 
-#if NET6_0_OR_GREATER
+#if NETCOREAPP
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 #endif
 
