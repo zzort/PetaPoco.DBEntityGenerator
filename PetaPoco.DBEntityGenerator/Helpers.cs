@@ -24,8 +24,10 @@
         {
             str = rxCleanUp.Replace(str, "_");
 
-            if (char.IsDigit(str[0]) || cs_keywords.Contains(str))
+            if (cs_keywords.Contains(str))
                 str = "@" + str;
+            else if (char.IsDigit(str[0]))
+                str = 'N' + str;
 
             return str;
         };
