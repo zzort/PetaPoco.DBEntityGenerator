@@ -342,6 +342,19 @@
 
             var tbl = item;
 
+            Column primaryKey = null;
+            try
+            {
+                primaryKey = tbl.PK;
+            }
+            catch (InvalidOperationException)
+            {
+                var msg = $"WARNING: Table '{tbl.Name}' has more than one primary key. This is not supported and the table was skipped.";
+                WriteLine("        // " + msg);
+                WriteLine("");
+                return;
+            }
+
             if (string.IsNullOrEmpty(tbl.Schema))
             {
                 WriteLine("    [TableName(\"{0}\")]", context.EscapeSqlIdentifier(tbl.Name).Replace("\"", "\\\""));
@@ -351,7 +364,7 @@
                 WriteLine("    [TableName(\"{0}.{1}\")]", context.EscapeSqlIdentifier(tbl.Schema).Replace("\"", "\\\""), context.EscapeSqlIdentifier(tbl.Name).Replace("\"", "\\\""));
             }
 
-            if (tbl.PK != null && tbl.PK.IsAutoIncrement)
+            if (primaryKey != null && primaryKey.IsAutoIncrement)
             {
                 if (tbl.SequenceName == null)
                 {
@@ -363,7 +376,7 @@
                 }
             }
 
-            if (tbl.PK != null && !tbl.PK.IsAutoIncrement)
+            if (primaryKey != null && !primaryKey.IsAutoIncrement)
             {
                 WriteLine("    [PrimaryKey(\"{0}\", AutoIncrement=false)]", tbl.PK.Name);
             }

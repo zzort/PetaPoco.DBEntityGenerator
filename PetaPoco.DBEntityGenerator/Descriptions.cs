@@ -1,4 +1,6 @@
-﻿namespace PetaPoco.DBEntityGenerator
+﻿using System;
+
+namespace PetaPoco.DBEntityGenerator
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -16,10 +18,7 @@
 
         public Column PK
         {
-            get
-            {
-                return this.Columns.SingleOrDefault(x => x.IsPK);
-            }
+            get { return Columns.SingleOrDefault(x => x.IsPK); }
         }
 
         public Column GetColumn(string columnName)
