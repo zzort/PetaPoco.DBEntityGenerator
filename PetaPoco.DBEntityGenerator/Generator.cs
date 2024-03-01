@@ -162,10 +162,22 @@ namespace PetaPoco.DBEntityGenerator
 
                     conn.Close();
 
+                    var classNameOccurrences = new Dictionary<string, int>();
+
                     var rxClean = new Regex("^(Equals|GetHashCode|GetType|ToString|repo|Save|IsNew|Insert|Update|Delete|Exists|SingleOrDefault|Single|First|FirstOrDefault|Fetch|Page|Query)$");
                     foreach (var t in result)
                     {
-                        t.ClassName = cmd.ClassPrefix + t.ClassName + cmd.ClassSuffix;
+                        var classNameBase = cmd.ClassPrefix + t.ClassName + cmd.ClassSuffix;
+                        if (classNameOccurrences.ContainsKey(classNameBase))
+                        {
+                            classNameOccurrences[classNameBase]++;
+                            t.ClassName = $"{classNameBase}_{classNameOccurrences[classNameBase]}";
+                        }
+                        else
+                        {
+                            classNameOccurrences.Add(classNameBase, 1);
+                            t.ClassName = classNameBase;
+                        }
                         foreach (var c in t.Columns)
                         {
                             c.PropertyName = rxClean.Replace(c.PropertyName, "_$1");
