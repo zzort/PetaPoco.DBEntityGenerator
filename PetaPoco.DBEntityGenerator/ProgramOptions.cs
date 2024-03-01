@@ -6,9 +6,6 @@ namespace PetaPoco.DBEntityGenerator
     {
         [Option("config", HelpText = "Config file path")]
         public string ConfigFile { get; set; }
-        
-        [Option("fullConfig", HelpText = "Full configuration as JSON string")]
-        public string FullConfig { get; set; }
 
         [Option('p', "providerName", HelpText = "Database provider name, supported arguments are Npgsql, SqlServer, MySql and Oracle")]
         public string ProviderName { get; set; }

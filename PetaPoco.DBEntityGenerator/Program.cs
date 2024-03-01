@@ -30,12 +30,7 @@
         private static void RunWithOptions(ProgramOptions opts)
         {
             GenerateCommand generateCommand = null;
-            if (!string.IsNullOrWhiteSpace(opts.FullConfig))
-            {
-                var configFileContent = opts.FullConfig;
-                generateCommand = JsonConvert.DeserializeObject<GenerateCommand>(configFileContent);
-            }
-            else if (!string.IsNullOrWhiteSpace(opts.ConfigFile))
+            if (!string.IsNullOrWhiteSpace(opts.ConfigFile))
             {
                 var configFileContent = string.Empty;
                 using (var fs = new FileStream(opts.ConfigFile, FileMode.Open))
