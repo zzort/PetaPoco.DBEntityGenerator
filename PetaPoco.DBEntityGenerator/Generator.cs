@@ -1,4 +1,9 @@
-﻿namespace PetaPoco.DBEntityGenerator
+﻿using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
+using Npgsql;
+using Oracle.ManagedDataAccess.Client;
+
+namespace PetaPoco.DBEntityGenerator
 {
     using PetaPoco.DBEntityGenerator.SchemaReaders;
 
@@ -16,6 +21,12 @@
         public Generator(IOutput outer)
         {
             this._outer = outer;
+#if NETCOREAPP
+            DbProviderFactories.RegisterFactory("Npgsql", NpgsqlFactory.Instance);
+            DbProviderFactories.RegisterFactory("SqlServer", SqlClientFactory.Instance);
+            DbProviderFactories.RegisterFactory("MySql", MySqlClientFactory.Instance);
+            DbProviderFactories.RegisterFactory("Oracle", OracleClientFactory.Instance);
+#endif
         }
 
         public void Generate(GenerateCommand cmd)
@@ -27,6 +38,7 @@
             WriteLine("// ");
             WriteLine("//     Connection String: `{0}`", Helpers.zap_password(cmd.ConnectionString));
             WriteLine("//     Provider:               `{0}`", cmd.ProviderName);
+            WriteLine("//     Date:                   {0}", DateTime.Now.ToString("O"));
             WriteLine("");
 
 #if NETCOREAPP
